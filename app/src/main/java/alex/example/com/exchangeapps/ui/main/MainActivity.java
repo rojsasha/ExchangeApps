@@ -1,6 +1,10 @@
 package alex.example.com.exchangeapps.ui.main;
 
+import android.app.AlarmManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import alex.example.com.exchangeapps.MyBroadcastReceiver;
 import alex.example.com.exchangeapps.R;
 import alex.example.com.exchangeapps.StartApplication;
 import alex.example.com.exchangeapps.base.BaseActivity;
@@ -19,17 +24,19 @@ import alex.example.com.exchangeapps.utils.StringResourses;
 public class MainActivity extends BaseActivity implements MainContract.View {
     private MainContract.Presenter mPresenter;
     private TextView mTvDollar, mTvEuro, mTvFunt, mTvSwiss;
+    IntentFilter s_intentFilter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_list);
         initToolbar();
+        registerReceiver(m_timeChangedReceiver, setS_intentFilter());
         mTvDollar = findViewById(R.id.tvDollar);
         mTvEuro = findViewById(R.id.tvEuro);
         mTvFunt = findViewById(R.id.tvFunt);
         mTvSwiss = findViewById(R.id.tvSwiss);
-
 
 
         mPresenter = new MainPresenter(StartApplication.get(this).getService(),
@@ -49,6 +56,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         mTvSwiss.setText(getString(R.string.cnf, formatDouble(rates.getcHF())));
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -73,10 +81,29 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         return String.format("%.2f", value);
     }
 
+    private IntentFilter setS_intentFilter() {
+        s_intentFilter = new IntentFilter();
+        s_intentFilter.addAction(Intent.ACTION_DATE_CHANGED);
+        return s_intentFilter;
+    }
+
+    private final BroadcastReceiver m_timeChangedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (action.equals(Intent.ACTION_DATE_CHANGED)) {
+                mPresenter.getExchangeRates();
+            }
+        }
+    };
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.unbind();
+        unregisterReceiver(m_timeChangedReceiver);
     }
 
     @Override
