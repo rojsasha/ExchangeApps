@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ExchangeApps</string>
+    <string name="API_KEY">1fc2a9bd0a85d3520261791025761f74</string>
+    <string name="text_forms">%1s 1 = %2s RUB</string>
+    <string name="usd">USD 1 = %1$s RUB</string>
+    <string name="euro">EURO 1 = %1$s RUB</string>
+    <string name="gbp">GBP 1 = %1$s RUB</string>
+    <string name="cnf">CHF 1 = %1$s RUB</string>
+    <string name="drawer_about">О разработчике</string>
+    <string name="drawer_exit">Выход</string>
+    <string name="about_me">Рожков Александр Викторович</string>
+    <string name="my_age">28 лет</string>
+    <string name="profession">программист Android</string>
+</resources>
