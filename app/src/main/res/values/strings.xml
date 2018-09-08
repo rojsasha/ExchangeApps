@@ -10,5 +10,6 @@
     <string name="drawer_exit">Выход</string>
     <string name="about_me">Рожков Александр Викторович</string>
     <string name="my_age">28 лет</string>
+
     <string name="profession">программист Android</string>
 </resources>
